@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.terms-and-conditions {
+  font-family: 'Noto Serif Devanagari', serif;
+  color: #000000;
+  background-color: #ffffff;
+  line-height: 1.6;
+}
+
+.terms-and-conditions h1, 
+.terms-and-conditions h2, 
+.terms-and-conditions h3 {
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.terms-and-conditions p, 
+.terms-and-conditions li {
+  font-weight: 400;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+@layer utilities {
+  .bg-pattern-overlay {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px), radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+  }
+  
+  .bg-mandala-pattern {
+    background-color: #1b75bc;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0 L34 10 L45 5 L40 16 L51 16 L43 25 L53 30 L43 35 L51 44 L40 44 L45 55 L34 50 L30 60 L26 50 L15 55 L20 44 L9 44 L17 35 L7 30 L17 25 L9 16 L20 16 L15 5 L26 10 Z' fill='%23ffffff' fill-opacity='0.08' stroke='%23ffffff' stroke-opacity='0.12' stroke-width='0.5'/%3E%3Ccircle cx='30' cy='30' r='12' fill='none' stroke='%23ffffff' stroke-opacity='0.15' stroke-width='1'/%3E%3Ccircle cx='30' cy='30' r='6' fill='none' stroke='%23ffffff' stroke-opacity='0.2' stroke-width='0.8'/%3E%3C/svg%3E");
+    background-size: 40px 40px;
+  }
+
+  .bg-purple-mandala-pattern {
+    background-color: #812b8c;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.03' stroke='%23ffffff' stroke-opacity='0.07' stroke-width='0.5'%3E%3Cpath d='M40 0 L45 15 L60 10 L50 24 L70 20 L55 33 L80 40 L55 47 L70 60 L50 56 L60 70 L45 65 L40 80 L35 65 L20 70 L30 56 L10 60 L25 47 L0 40 L25 33 L10 20 L30 24 L20 10 L35 15 Z'/%3E%3Ccircle cx='40' cy='40' r='18' fill='none'/%3E%3Ccircle cx='40' cy='40' r='10' fill='none'/%3E%3Ccircle cx='40' cy='40' r='4' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+}
+
+/* Global Smooth Scrolling & Devanagari default */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Noto Sans Devanagari', 'Open Sans', sans-serif;
+  color: #333333;
+}
+
+.font-hindi {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Custom Side Scrollbar for horizontal scrolling elements */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 7px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(56, 73, 26, 0.4); /* Matching olive green family */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 73, 26, 0.6);
+}
+
+/* Animation Utilities */
+@keyframes zoom-in-slow {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.06); }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.animate-zoom-in-slow {
+  animation: zoom-in-slow 12s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-fill-mode: both;
+}
+
+.animate-fade-in {
+  animation: fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-fill-mode: both;
+}
+
+.animation-delay-150 {
+  animation-delay: 150ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-450 {
+  animation-delay: 450ms;
+}
+
+/* Dropdown & Mobile Menu Animations */
+@keyframes dropdown-fade-slide {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drawer-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: dropdown-fade-slide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-fill-mode: both;
+}
+
+.animate-slideDown {
+  animation: drawer-slide-down 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-fill-mode: both;
+}
