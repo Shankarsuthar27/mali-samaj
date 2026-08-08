@@ -97,6 +97,16 @@ export const AboutPage: React.FC = () => {
     }
   }, [location.state]);
 
+  const handleBack = () => {
+    if (location.state && (location.state as any).selectedPostId) {
+      // Clear the state in browser history to prevent loop, then go back
+      navigate(location.pathname, { replace: true, state: {} });
+      navigate(-1);
+    } else {
+      setSelectedPost(null);
+    }
+  };
+
   const subpageTitles: Record<string, string> = {
     'institute-intro': 'संस्थान परिचय (Institute Introduction)',
     'our-team': 'हमारी कार्यकारिणी एवं टीम (Our Team)',
@@ -650,13 +660,10 @@ export const AboutPage: React.FC = () => {
                 <div className="space-y-6 font-devanagari text-gray-800">
                   {/* Back Link */}
                   <button
-                    onClick={() => {
-                      setSelectedPost(null);
-                      navigate('/about/blog', { replace: true, state: null });
-                    }}
+                    onClick={handleBack}
                     className="text-xs sm:text-sm font-bold text-orange-600 hover:text-orange-800 flex items-center space-x-1"
                   >
-                    <span>&lt; वापस जाएँ (Back to Blog List)</span>
+                    <span>&lt; पिछला लेख</span>
                   </button>
 
                   {/* Headline */}
