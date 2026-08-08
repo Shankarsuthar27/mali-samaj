@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Hero } from '../components/Hero';
 import { TickerMarquee } from '../components/TickerMarquee';
 import { AboutSection } from '../components/AboutSection';
@@ -10,34 +10,50 @@ import { ActivityCarousel } from '../components/ActivityCarousel';
 import { DirectorySection } from '../components/DirectorySection';
 import { WelfareGridSection } from '../components/WelfareGridSection';
 import { LandingAccordionItem } from '../components/LandingAccordionItem';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Image as ImageIcon, Newspaper, ArrowRight } from 'lucide-react';
+import { fetchAllBlogs, BlogPost } from '../lib/blogs';
 
 interface HomePageProps {
   onOpenRegister: () => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onOpenRegister }) => {
-  const latestNews = [
+  const navigate = useNavigate();
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAllBlogs().then((data) => {
+      setBlogs(data || []);
+      setLoading(false);
+    });
+  }, []);
+
+  const fallbackNews = [
     {
       id: '1',
       title: 'अहमदाबाद में मारवाड़ी माली सैनी समाज का विशाल स्नेह मिलन एवं डायरेक्टरी विमोचन समारोह संपन्न',
       category: 'प्रवास प्रदेश',
-      date: '०५ अगस्त २०२६',
-      summary: 'समारोह में गुजरात भर से हजारों समाज बंधु उपस्थित रहे। भामाशाहों का बहुमान किया गया।',
+      meta: '०५ अगस्त २०२६ • Admin',
+      desc: 'समारोह में गुजरात भर से हजारों समाज बंधु उपस्थित रहे। भामाशाहों का बहुमान किया गया।',
       image: '/images/1212.webp',
-      link: '/category/pravas-pradesh',
     },
     {
       id: '2',
       title: 'जोधपुर: संत लिखमीदास जी महाराज के मंदिर प्रांगण में विशेष पूजा-अर्चना एवं प्रतिभा सम्मान',
       category: 'मारवाड़',
-      date: '०१ अगस्त २०२६',
-      summary: 'मारवाड़ क्षेत्र के मेधावी छात्र-छात्राओं को समाज द्वारा प्रोत्साहन पुरस्कार वितरित किए गए।',
+      meta: '०१ अगस्त २०२६ • Admin',
+      desc: 'मारवाड़ क्षेत्र के मेधावी छात्र-छात्राओं को समाज द्वारा प्रोत्साहन पुरस्कार वितरित किए गए।',
       image: '/images/Untitled-design-36.webp',
-      link: '/category/marwar',
     },
   ];
+
+  const displayNews = blogs.length > 0 ? blogs.slice(0, 2) : fallbackNews.slice(0, 2);
+
+  const handleNewsClick = (id: string | number) => {
+    navigate('/about/blog', { state: { selectedPostId: id } });
+  };
 
   return (
     <div className="min-h-screen flex flex-col font-devanagari">
@@ -82,7 +98,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenRegister }) => {
               </h2>
             </div>
             <Link
-              to="/category/marwar"
+              to="/about/blog"
               className="mt-4 md:mt-0 inline-flex items-center text-sm font-bold text-orange-600 hover:text-orange-800"
             >
               <span>सभी समाचार देखें</span>
@@ -91,42 +107,45 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenRegister }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {latestNews.map((news) => (
-              <div
-                key={news.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col sm:flex-row group"
-              >
-                <div className="sm:w-2/5 h-48 sm:h-auto relative overflow-hidden bg-gray-100">
-                  <img
-                    src={news.image}
-                    alt={news.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-3 left-3 bg-orange-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
-                    {news.category}
-                  </span>
-                </div>
-                
-                <div className="sm:w-3/5 p-5 flex flex-col justify-between">
-                  <div>
-                    <span className="text-xs text-gray-400 font-medium">{news.date}</span>
-                    <h3 className="font-bold text-gray-900 text-base sm:text-lg leading-snug mt-1 mb-2 group-hover:text-orange-600 transition-colors">
-                      {news.title}
-                    </h3>
-                    <p className="text-xs text-gray-600 line-clamp-2">
-                      {news.summary}
-                    </p>
+            {displayNews.map((news) => {
+              const newsDate = news.meta ? news.meta.split(' • ')[0] : 'हाल ही में';
+              const newsCategory = news.category || 'मारवाड़';
+
+              return (
+                <div
+                  key={news.id}
+                  onClick={() => handleNewsClick(news.id)}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col sm:flex-row group cursor-pointer min-h-[260px] sm:min-h-[280px]"
+                >
+                  <div className="sm:w-5/12 h-56 sm:h-full min-h-[220px] sm:min-h-[280px] relative overflow-hidden bg-gray-100 shrink-0">
+                    <img
+                      src={news.image}
+                      alt={news.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-3 left-3 bg-orange-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
+                      {newsCategory}
+                    </span>
                   </div>
-                  <Link
-                    to={news.link}
-                    className="mt-4 inline-flex items-center text-xs font-bold text-blue-600 hover:text-blue-800"
-                  >
-                    <span>आगे पढ़ें</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                  </Link>
+                  
+                  <div className="sm:w-7/12 p-6 sm:p-7 flex flex-col justify-between">
+                    <div>
+                      <span className="text-xs text-gray-400 font-semibold">{newsDate}</span>
+                      <h3 className="font-extrabold text-gray-900 text-base sm:text-lg leading-snug mt-1.5 mb-3 group-hover:text-orange-600 transition-colors line-clamp-3">
+                        {news.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600 line-clamp-3 leading-relaxed">
+                        {news.desc}
+                      </p>
+                    </div>
+                    <div className="mt-5 inline-flex items-center text-xs sm:text-sm font-bold text-blue-600 group-hover:text-blue-800">
+                      <span>आगे पढ़ें</span>
+                      <ArrowRight className="w-4 h-4 ml-1" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
         </div>
