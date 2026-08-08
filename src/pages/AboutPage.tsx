@@ -108,7 +108,7 @@ export const AboutPage: React.FC = () => {
   const currentTitle = subpageTitles[subpage || 'institute-intro'] || 'हमारे बारे में';
 
   return (
-    <div className="min-h-screen bg-gray-50 font-devanagari py-10">
+    <div className="min-h-screen bg-white font-devanagari py-10">
 
       {/* Header Banner */}
       {/* <div className="bg-mandala-pattern text-white py-12 px-4 text-center border-b border-blue-400/20 shadow-md">
@@ -123,7 +123,7 @@ export const AboutPage: React.FC = () => {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 terms-and-conditions">
         {/* Main Content Area */}
-        <div className="bg-white rounded-2xl p-3 xs:p-4 sm:p-8 shadow-sm border border-gray-200 space-y-6">
+        <div className="bg-white rounded-2xl p-3 xs:p-4 sm:p-8  space-y-6">
 
           {(!subpage || subpage === 'institute-intro') && (
             <div className="space-y-6 text-gray-800 leading-relaxed font-devanagari">
@@ -652,7 +652,7 @@ export const AboutPage: React.FC = () => {
                     onClick={() => setSelectedPost(null)}
                     className="text-xs sm:text-sm font-bold text-orange-600 hover:text-orange-800 flex items-center space-x-1"
                   >
-                    <span>&lt; पिछला लेख</span>
+                    <span>&lt; सभी ब्लॉग (Back to All Blogs)</span>
                   </button>
 
                   {/* Headline */}
