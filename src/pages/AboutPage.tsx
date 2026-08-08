@@ -701,28 +701,6 @@ export const AboutPage: React.FC = () => {
                         </p>
                       </div>
 
-                      {/* Embedded Posters/Graphics (High-fidelity matching screenshot) */}
-                      <div className="space-y-4 pt-4 border-t border-gray-200">
-                        <h4 className="font-bold text-gray-900 text-sm sm:text-base mb-2">
-                          समाज की ऐतिहासिक एवं सामाजिक सामग्री:
-                        </h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="border border-gray-250 p-1 bg-white">
-                            <img
-                              src="/images/Untitled-design-36.webp"
-                              alt="हमारे समाज का गौरवशाली इतिहास"
-                              className="w-full h-auto object-cover"
-                            />
-                          </div>
-                          <div className="border border-gray-250 p-1 bg-white">
-                            <img
-                              src="/images/Untitled-design-37.webp"
-                              alt="माली सैनी महासभा राजस्थान प्रदेश"
-                              className="w-full h-auto object-cover"
-                            />
-                          </div>
-                        </div>
-                      </div>
 
                       {/* Social share icons footer */}
                       <div className="flex items-center space-x-2 pt-6 border-t border-gray-150">

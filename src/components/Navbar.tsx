@@ -327,7 +327,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
               location.pathname === '/directory' && 'text-accentYellow'
             )}
           >
-            निर्देशिका
+            डायरेक्टरी
           </Link>
 
           {/* Direct Link: संपर्क */}
