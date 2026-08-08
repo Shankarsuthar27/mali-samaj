@@ -9,6 +9,7 @@ import { EldersGuidance } from '../components/EldersGuidance';
 import { ActivityCarousel } from '../components/ActivityCarousel';
 import { DirectorySection } from '../components/DirectorySection';
 import { WelfareGridSection } from '../components/WelfareGridSection';
+import { LandingAccordionItem } from '../components/LandingAccordionItem';
 import { Link } from 'react-router-dom';
 import { Image as ImageIcon, Newspaper, ArrowRight } from 'lucide-react';
 
@@ -130,6 +131,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenRegister }) => {
 
         </div>
       </section>
+
+      {/* Interactive Landing Accordion Item */}
+      <LandingAccordionItem />
 
       {/* Welfare Topics Grid */}
       <WelfareGridSection />
