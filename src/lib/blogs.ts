@@ -125,6 +125,17 @@ export const saveBlogsToLocal = (blogs: BlogPost[]) => {
   }
 };
 
+const isTableMissingError = (err: any): boolean => {
+  if (!err) return false;
+  const msg = (err.message || String(err)).toLowerCase();
+  return (
+    err.code === 'PGRST205' ||
+    msg.includes('could not find the table') ||
+    msg.includes('relation "public.blogs" does not exist') ||
+    msg.includes('schema cache')
+  );
+};
+
 export const fetchAllBlogs = async (): Promise<BlogPost[]> => {
   if (isSupabaseConfigured()) {
     try {
@@ -149,7 +160,7 @@ export const fetchAllBlogs = async (): Promise<BlogPost[]> => {
         return data as BlogPost[];
       }
       if (error) {
-        console.warn('Supabase fetch blogs error:', error);
+        console.warn('Supabase fetch blogs notice/error:', error.message);
       }
     } catch (e) {
       console.warn('Supabase blogs table not found or error, using fallback state', e);
@@ -178,12 +189,20 @@ export const saveBlogPost = async (blog: Partial<BlogPost>): Promise<BlogPost> =
     try {
       const { error } = await supabase.from('blogs').upsert(payload, { onConflict: 'id' });
       if (error) {
-        console.error('Supabase save error details:', error);
-        throw new Error(error.message || 'Supabase database error');
+        if (isTableMissingError(error)) {
+          console.warn('Supabase blogs table missing, falling back to local storage. Run SQL migration in Supabase SQL Editor.', error);
+        } else {
+          console.error('Supabase save error details:', error);
+          throw new Error(error.message || 'Supabase database error');
+        }
       }
     } catch (e: any) {
-      console.error('Failed saving blog to Supabase:', e);
-      throw new Error(e.message || 'Failed saving blog to Supabase database.');
+      if (isTableMissingError(e)) {
+        console.warn('Supabase blogs table missing, saving locally.', e);
+      } else {
+        console.error('Failed saving blog to Supabase:', e);
+        throw new Error(e.message || 'Failed saving blog to Supabase database.');
+      }
     }
   }
 
@@ -206,12 +225,20 @@ export const deleteBlogPost = async (id: string | number): Promise<void> => {
     try {
       const { error } = await supabase.from('blogs').delete().eq('id', strId);
       if (error) {
-        console.error('Supabase delete error details:', error);
-        throw new Error(error.message || 'Supabase database delete error');
+        if (isTableMissingError(error)) {
+          console.warn('Supabase blogs table missing, deleting locally.', error);
+        } else {
+          console.error('Supabase delete error details:', error);
+          throw new Error(error.message || 'Supabase database delete error');
+        }
       }
     } catch (e: any) {
-      console.error('Failed deleting blog from Supabase:', e);
-      throw new Error(e.message || 'Failed deleting blog from Supabase database.');
+      if (isTableMissingError(e)) {
+        console.warn('Supabase blogs table missing, deleting locally.', e);
+      } else {
+        console.error('Failed deleting blog from Supabase:', e);
+        throw new Error(e.message || 'Failed deleting blog from Supabase database.');
+      }
     }
   }
 

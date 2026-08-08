@@ -105,7 +105,7 @@ CREATE INDEX IF NOT EXISTS idx_logs_created_at ON public.admin_activity_logs(cre
 CREATE TABLE IF NOT EXISTS public.blogs (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
-  desc TEXT NOT NULL,
+  "desc" TEXT NOT NULL,
   image TEXT NOT NULL,
   meta TEXT NOT NULL,
   category TEXT DEFAULT 'मारवाड़',
