@@ -843,23 +843,21 @@ export const AboutPage: React.FC = () => {
                           onClick={() => setSelectedPost(post)}
                           className="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm flex flex-col group cursor-pointer hover:shadow-md transition-shadow"
                         >
-                          {/* Image banner with dark gradient overlay and white title inside bottom */}
+                          {/* Image banner with no overlay text */}
                           <div className="relative h-[440px] sm:h-[560px] w-full overflow-hidden bg-gray-50">
                             <img
                               src={post.image}
                               alt={post.title}
                               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex items-end p-4 sm:p-5">
-                              <h3 className="text-white font-bold text-sm sm:text-base md:text-lg leading-snug">
-                                {post.title}
-                              </h3>
-                            </div>
                           </div>
 
-                          {/* Description and metadata footer */}
+                          {/* Description, title and metadata footer */}
                           <div className="p-4 sm:p-5 space-y-4">
-                            <p className="text-gray-705 text-xs sm:text-sm leading-relaxed line-clamp-2">
+                            <h3 className="font-bold text-gray-900 text-base sm:text-lg leading-snug group-hover:text-orange-600 transition-colors">
+                              {post.title}
+                            </h3>
+                            <p className="text-gray-750 text-xs sm:text-sm leading-relaxed line-clamp-2">
                               {post.desc}
                             </p>
                             <div className="pt-2 border-t border-gray-150 flex items-center justify-between text-[11px] text-gray-500 font-semibold">
