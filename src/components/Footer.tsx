@@ -108,6 +108,11 @@ export const Footer: React.FC = () => {
                   आपके सवाल - हमारे जवाब
                 </Link>
               </li>
+              <li>
+                <Link to="/admin/login" className="text-amber-300 hover:text-amber-200 hover:underline transition-all duration-200 font-bold flex items-center space-x-1">
+                  <span>एडमिन लॉगिन (Admin Panel)</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

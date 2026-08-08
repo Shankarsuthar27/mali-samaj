@@ -1,5 +1,6 @@
 import React from 'react';
-import { Mail, Phone, Instagram, Facebook, MessageCircle, Youtube } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Mail, Phone, Instagram, Facebook, MessageCircle, Youtube, Shield } from 'lucide-react';
 
 export const TopHeader: React.FC = () => {
   return (
@@ -26,7 +27,7 @@ export const TopHeader: React.FC = () => {
           </a>
         </div>
 
-        {/* Right Content - Social Icons */}
+        {/* Right Content - Social Icons & Admin Login Link */}
         <div className="flex items-center space-x-4">
           <a
             href="https://instagram.com"
@@ -64,6 +65,16 @@ export const TopHeader: React.FC = () => {
           >
             <Youtube className="w-4 h-4" />
           </a>
+
+          {/* Dedicated Admin Portal Direct Link */}
+          <Link
+            to="/admin/login"
+            className="flex items-center space-x-1 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 hover:text-white border border-amber-400/40 px-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-xs"
+            title="Admin Login Portal"
+          >
+            <Shield className="w-3.5 h-3.5 text-amber-300" />
+            <span>Admin Login</span>
+          </Link>
         </div>
       </div>
     </div>

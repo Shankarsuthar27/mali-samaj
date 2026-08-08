@@ -64,7 +64,7 @@ const aboutLinks2: LinkItem[] = [
     icon: HelpCircle,
   },
   {
-    title: 'समाज ब्लॉग',
+    title: 'Blog',
     href: '/about/blog',
     icon: BookOpen,
   },
@@ -214,27 +214,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
             </button>
 
             {activeDropdown === 'about' && (
-              <div className="absolute top-full left-0 w-[540px] bg-white rounded-xl shadow-2xl p-4 border border-gray-150 z-50 animate-fadeIn grid grid-cols-12 gap-4">
-                <ul className="col-span-7 space-y-2">
-                  {aboutLinks.map((item, i) => (
-                    <li key={i}>
-                      <ListItem {...item} />
-                    </li>
+              <div className="absolute top-full left-0 w-64 bg-[#344219] rounded-md shadow-2xl overflow-hidden border border-[#485b24]/80 py-1 z-50 animate-fadeIn font-devanagari">
+                <div className="flex flex-col">
+                  {aboutLinks.concat(aboutLinks2).map((item, i) => (
+                    <Link
+                      key={i}
+                      to={item.href}
+                      className="block px-5 py-3 text-left text-[#e5dcad] hover:text-white hover:bg-[#556822] font-bold text-xs sm:text-sm border-b border-[#485b24]/50 last:border-b-0 transition-colors"
+                    >
+                      {item.title}
+                    </Link>
                   ))}
-                </ul>
-                <ul className="col-span-5 bg-gray-50/50 rounded-lg p-3 space-y-2 border border-gray-100">
-                  {aboutLinks2.map((item, i) => (
-                    <li key={i}>
-                      <Link
-                        to={item.href}
-                        className="flex p-2 hover:bg-gray-100 rounded-md items-center gap-x-2.5 transition-colors group"
-                      >
-                        <item.icon className="text-gray-550 group-hover:text-navOrange size-4.5 transition-colors" />
-                        <span className="font-semibold text-xs sm:text-sm text-gray-800 group-hover:text-navOrange transition-colors">{item.title}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
@@ -256,14 +247,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
             </button>
 
             {activeDropdown === 'news' && (
-              <div className="absolute top-full left-0 w-80 bg-white rounded-xl shadow-2xl p-2.5 border border-gray-150 z-50 animate-fadeIn">
-                <ul className="space-y-1.5">
+              <div className="absolute top-full left-0 w-64 bg-[#344219] rounded-md shadow-2xl overflow-hidden border border-[#485b24]/80 py-1 z-50 animate-fadeIn font-devanagari">
+                <div className="flex flex-col">
                   {newsLinks.map((item, i) => (
-                    <li key={i}>
-                      <ListItem {...item} />
-                    </li>
+                    <Link
+                      key={i}
+                      to={item.href}
+                      className="block px-5 py-3 text-left text-[#e5dcad] hover:text-white hover:bg-[#556822] font-bold text-xs sm:text-sm border-b border-[#485b24]/50 last:border-b-0 transition-colors"
+                    >
+                      {item.title}
+                    </Link>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
@@ -285,14 +280,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
             </button>
 
             {activeDropdown === 'welfare' && (
-              <div className="absolute top-full left-0 w-96 bg-white rounded-xl shadow-2xl p-3 border border-gray-150 z-50 animate-fadeIn">
-                <ul className="space-y-2">
+              <div className="absolute top-full left-0 w-64 bg-[#344219] rounded-md shadow-2xl overflow-hidden border border-[#485b24]/80 py-1 z-50 animate-fadeIn font-devanagari">
+                <div className="flex flex-col">
                   {welfareLinks.map((item, i) => (
-                    <li key={i}>
-                      <ListItem {...item} />
-                    </li>
+                    <Link
+                      key={i}
+                      to={item.href}
+                      className="block px-5 py-3 text-left text-[#e5dcad] hover:text-white hover:bg-[#556822] font-bold text-xs sm:text-sm border-b border-[#485b24]/50 last:border-b-0 transition-colors"
+                    >
+                      {item.title}
+                    </Link>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
@@ -436,46 +435,46 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
               "transition-all duration-350 ease-in-out overflow-hidden",
               aboutExpanded ? "max-h-[500px] opacity-100 mt-2 mb-1" : "max-h-0 opacity-0 mt-0 mb-0 pointer-events-none"
             )}>
-              <div className="bg-dropdownGreen rounded-2xl p-1 border border-emerald-950/20 shadow-inner">
+              <div className="bg-[#344219] rounded-2xl overflow-hidden border border-[#485b24]/80 shadow-inner">
                 <Link
                   to="/about/institute-intro"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   संस्थान परिचय
                 </Link>
                 <Link
                   to="/about/our-team"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   हमारी टीम
                 </Link>
                 <Link
                   to="/about/photo-gallery"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   फोटो गैलरी
                 </Link>
                 <Link
                   to="/about/rules-discipline"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   नियम एवं अनुशासन
                 </Link>
                 <Link
                   to="/about/faq"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   आपके सवाल - हमारे जवाब
                 </Link>
                 <Link
                   to="/about/blog"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 last:border-0 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 last:border-0 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   Blog
                 </Link>
@@ -496,18 +495,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
               "transition-all duration-350 ease-in-out overflow-hidden",
               newsExpanded ? "max-h-[300px] opacity-100 mt-2 mb-1" : "max-h-0 opacity-0 mt-0 mb-0 pointer-events-none"
             )}>
-              <div className="bg-dropdownGreen rounded-2xl p-1 border border-emerald-950/20 shadow-inner">
+              <div className="bg-[#344219] rounded-2xl overflow-hidden border border-[#485b24]/80 shadow-inner">
                 <Link
                   to="/category/marwar"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   मारवाड़ समाचार
                 </Link>
                 <Link
                   to="/category/pravas-pradesh"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 last:border-0 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 last:border-0 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   प्रवास प्रदेश समाचार
                 </Link>
@@ -555,32 +554,32 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
               "transition-all duration-350 ease-in-out overflow-hidden",
               welfareExpanded ? "max-h-[400px] opacity-100 mt-2 mb-1" : "max-h-0 opacity-0 mt-0 mb-0 pointer-events-none"
             )}>
-              <div className="bg-dropdownGreen rounded-2xl p-1 border border-emerald-950/20 shadow-inner">
+              <div className="bg-[#344219] rounded-2xl overflow-hidden border border-[#485b24]/80 shadow-inner">
                 <Link
                   to="/welfare/social-welfare"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   सोशल वेलफेयर
                 </Link>
                 <Link
                   to="/welfare/business-advice"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   व्यापारिक सलाह
                 </Link>
                 <Link
                   to="/welfare/employment-opportunities"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 border-b border-white/10 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 border-b border-[#485b24]/50 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   रोजगार अवसर
                 </Link>
                 <Link
                   to="/welfare/samaj-ratna"
                   onClick={() => setOpen(false)}
-                  className="block text-white font-semibold text-[15px] px-4 py-3.5 last:border-0 hover:text-accentYellow transition-colors"
+                  className="block text-[#e5dcad] font-bold text-[15px] px-5 py-3.5 last:border-0 hover:text-white hover:bg-[#556822] transition-colors"
                 >
                   समाज रत्न
                 </Link>

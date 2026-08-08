@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { ShieldCheck, Users, Image as ImageIcon, HelpCircle, FileText, Bookmark, Phone } from 'lucide-react';
+import { ShieldCheck, Users, Image as ImageIcon, HelpCircle, FileText, Bookmark, Phone, ChevronRight, Calendar, FolderOpen } from 'lucide-react';
+import { fetchAllBlogs, BlogPost } from '../lib/blogs';
 
 const BLOG_POSTS_DATA = [
   {
@@ -81,6 +82,16 @@ export const AboutPage: React.FC = () => {
   const navigate = useNavigate();
   const [activeTeamTab, setActiveTeamTab] = useState('all');
   const [selectedPost, setSelectedPost] = useState<any>(null);
+  const [currentBlogPage, setCurrentBlogPage] = useState(1);
+  const [dynamicBlogs, setDynamicBlogs] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    fetchAllBlogs().then((data) => {
+      if (data && data.length > 0) {
+        setDynamicBlogs(data);
+      }
+    });
+  }, [subpage]);
 
   // Scroll to top when subpage parameter or selected blog post changes
   useEffect(() => {
@@ -113,7 +124,7 @@ export const AboutPage: React.FC = () => {
     'photo-gallery': 'फोटो गैलरी (Photo Gallery)',
     'rules-discipline': 'नियम एवं अनुशासन (Rules & Discipline)',
     'faq': 'आपके सवाल – हमारे जवाब (FAQs)',
-    'blog': 'समाज ब्लॉग (Blog)',
+    'blog': 'blog (Blog)',
   };
 
   const currentTitle = subpageTitles[subpage || 'institute-intro'] || 'हमारे बारे में';
@@ -653,7 +664,7 @@ export const AboutPage: React.FC = () => {
           )}
 
           {subpage === 'blog' && (() => {
-            const blogPosts = BLOG_POSTS_DATA;
+            const blogPosts = dynamicBlogs.length > 0 ? dynamicBlogs : BLOG_POSTS_DATA;
 
             if (selectedPost) {
               return (
@@ -692,28 +703,99 @@ export const AboutPage: React.FC = () => {
                       </div>
 
                       {/* Detail Paragraphs */}
-                      <div className="text-gray-700 text-sm sm:text-base space-y-4 leading-relaxed pl-1">
-                        <p>
-                          {selectedPost.desc} मारवाड़ क्षेत्र से जुड़े माली सैनी प्रवासी समाज के विकास और संगठन को सुदृढ़ बनाने के लिए इस तरह के कार्यक्रमों का विशेष महत्व है। यह न केवल समाजबंधुओं के आपसी जुड़ाव को बढ़ाता है, बल्कि समाज के सामने एक सकारात्मक मार्ग भी प्रशस्त करता है।
-                        </p>
-                        <p>
-                          समाज के प्रतिनिधिमण्डल ने समाज के सामाजिक, शैक्षणिक और आर्थिक उत्थान के लिए विभिन्न विषयों पर चर्चा की और समाज के उज्ज्वल भविष्य की कामना की।
-                        </p>
+                      <div className="text-gray-700 text-sm sm:text-base space-y-4 leading-relaxed pl-1 whitespace-pre-line">
+                        <p>{selectedPost.desc}</p>
                       </div>
 
 
-                      {/* Social share icons footer */}
-                      <div className="flex items-center space-x-2 pt-6 border-t border-gray-150">
-                        <span className="text-xs font-bold text-gray-500 mr-2">Share:</span>
-                        {['bg-blue-600', 'bg-green-500', 'bg-blue-400', 'bg-blue-700', 'bg-gray-600'].map((bg, i) => (
-                          <div key={i} className={`w-7 h-7 ${bg} text-white rounded-full flex items-center justify-center text-xs font-bold cursor-pointer hover:opacity-90`}>
-                            {['F', 'W', 'T', 'L', '+'][i]}
-                          </div>
-                        ))}
+                      {/* Social share bar matching exact screenshots */}
+                      <div className="py-4 my-6 border-y border-gray-200 flex flex-wrap items-center justify-between gap-4 font-serif">
+                        <span className="text-base font-medium text-gray-800">Share:</span>
+                        <div className="flex items-center space-x-2 sm:space-x-2.5">
+                          {/* Facebook */}
+                          <a
+                            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-9 h-9 sm:w-10 sm:h-10 bg-[#1877f2] hover:opacity-90 rounded-lg flex items-center justify-center text-white transition-all shadow-xs"
+                            title="Share on Facebook"
+                          >
+                            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                          </a>
+
+                          {/* WhatsApp */}
+                          <a
+                            href={`https://api.whatsapp.com/send?text=${encodeURIComponent(selectedPost.title + ' ' + window.location.href)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-9 h-9 sm:w-10 sm:h-10  hover:opacity-90 rounded-lg flex items-center justify-center text-white transition-all shadow-xs"
+                            title="Share on WhatsApp"
+                          >
+                            <img className='w-full h-full' src="./whatsapp.png" alt="" />
+                          </a>
+
+                          {/* X (Twitter) */}
+                          <a
+                            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(selectedPost.title)}&url=${encodeURIComponent(window.location.href)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-9 h-9 sm:w-10 sm:h-10 bg-[#0f1419] hover:opacity-90 rounded-lg flex items-center justify-center text-white transition-all shadow-xs"
+                            title="Share on X"
+                          >
+                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                          </a>
+
+                          {/* Telegram */}
+                          <a
+                            href={`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(selectedPost.title)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-9 h-9 sm:w-10 sm:h-10 bg-[#24a1de] hover:opacity-90 rounded-lg flex items-center justify-center text-white transition-all shadow-xs"
+                            title="Share on Telegram"
+                          >
+                            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.67-.52.36-1 .54-1.43.53-.47-.01-1.37-.26-2.05-.48-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.74 3.99-1.74 6.66-2.89 8.01-3.45 3.82-1.59 4.61-1.87 5.13-1.88.11 0 .37.03.54.17.14.12.18.28.2.4.01.06.02.19 0 .33z"/>
+                            </svg>
+                          </a>
+
+                          {/* LinkedIn */}
+                          <a
+                            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-9 h-9 sm:w-10 sm:h-10 bg-[#0a66c2] hover:opacity-90 rounded-lg flex items-center justify-center text-white font-bold text-sm transition-all shadow-xs"
+                            title="Share on LinkedIn"
+                          >
+                            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.64a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/>
+                            </svg>
+                          </a>
+
+                          {/* Plus */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (navigator.share) {
+                                navigator.share({ title: selectedPost.title, url: window.location.href }).catch(() => {});
+                              } else {
+                                navigator.clipboard.writeText(window.location.href);
+                                alert('कॉपी किया गया लिंक: ' + window.location.href);
+                              }
+                            }}
+                            className="w-9 h-9 sm:w-10 sm:h-10 bg-[#0066ff] hover:opacity-90 rounded-lg flex items-center justify-center text-white font-extrabold text-2xl transition-all shadow-xs"
+                            title="Share / Copy Link"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
 
                       {/* Previous/Next article navigations */}
-                      <div className="flex justify-between items-center pt-6 border-t border-gray-150 text-xs sm:text-sm font-bold">
+                      <div className="flex justify-between items-center pt-4 text-xs sm:text-sm font-bold">
                         <button
                           onClick={() => {
                             const prevIdx = blogPosts.findIndex(p => p.id === selectedPost.id) - 1;
@@ -742,16 +824,53 @@ export const AboutPage: React.FC = () => {
                     <div className="lg:col-span-4 space-y-6">
 
                       {/* Share Widget */}
-                      <div className="bg-white border border-gray-200 p-4 rounded-none shadow-sm">
-                        <h4 className="font-bold text-gray-900 text-sm border-b pb-2 mb-3">
-                          Share
+                      <div className="bg-white border border-gray-200 p-4 rounded-none shadow-sm space-y-3">
+                        <h4 className="font-bold text-gray-900 text-sm border-b pb-2">
+                          Share Article
                         </h4>
-                        <div className="flex space-x-3 text-gray-500">
-                          {['X', 'F', 'L', 'W'].map((ic, i) => (
-                            <span key={i} className="hover:text-orange-600 cursor-pointer font-bold text-sm">
-                              {ic}
-                            </span>
-                          ))}
+                        <div className="flex flex-wrap items-center gap-2">
+                          <a
+                            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-8 h-8 bg-[#1877f2] rounded-lg flex items-center justify-center text-white hover:opacity-90"
+                            title="Facebook"
+                          >
+                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                          </a>
+                          <a
+                            href={`https://api.whatsapp.com/send?text=${encodeURIComponent(selectedPost.title + ' ' + window.location.href)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-8 h-8  rounded-lg flex items-center justify-center text-white hover:opacity-90"
+                            title="WhatsApp"
+                          >
+                           <img className='width-12' src="./whatsapp.png" alt="" />
+                          </a>
+                          <a
+                            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(selectedPost.title)}&url=${encodeURIComponent(window.location.href)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-8 h-8 bg-[#0f1419] rounded-lg flex items-center justify-center text-white hover:opacity-90"
+                            title="X"
+                          >
+                            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                          </a>
+                          <a
+                            href={`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(selectedPost.title)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-8 h-8 bg-[#24a1de] rounded-lg flex items-center justify-center text-white hover:opacity-90"
+                            title="Telegram"
+                          >
+                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.67-.52.36-1 .54-1.43.53-.47-.01-1.37-.26-2.05-.48-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.74 3.99-1.74 6.66-2.89 8.01-3.45 3.82-1.59 4.61-1.87 5.13-1.88.11 0 .37.03.54.17.14.12.18.28.2.4.01.06.02.19 0 .33z"/>
+                            </svg>
+                          </a>
                         </div>
                       </div>
 
@@ -817,54 +936,102 @@ export const AboutPage: React.FC = () => {
               );
             }
 
-            // Render main list view
+            // Render main list view with 7 blogs per page
+            const BLOGS_PER_PAGE = 7;
+            const totalBlogPages = Math.ceil(blogPosts.length / BLOGS_PER_PAGE) || 1;
+            const paginatedPosts = blogPosts.slice((currentBlogPage - 1) * BLOGS_PER_PAGE, currentBlogPage * BLOGS_PER_PAGE);
+
             return (
               <div className="space-y-6 font-devanagari text-gray-800">
                 <h2 className="text-2xl font-bold text-gray-900 border-b pb-2 text-footerPurple mb-6">
                   समाज ब्लॉग एवं लेख
                 </h2>
 
-                <div className="space-y-8 w-full mx-auto">
-                  {blogPosts.map((post, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => setSelectedPost(post)}
-                      className="bg-white rounded-none border-x-0 sm:border border-gray-200 overflow-hidden shadow-sm flex flex-col group cursor-pointer hover:shadow-md transition-shadow -mx-4 sm:mx-0"
-                    >
-                      {/* Image banner with no overlay text */}
-                      <div className="relative h-60 xs:h-72 sm:h-[500px] md:h-[560px] w-full overflow-hidden bg-gray-50">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
-                        />
-                      </div>
+                <div className="divide-y divide-dashed divide-gray-300/80 w-full mx-auto space-y-2">
+                  {paginatedPosts.map((post, idx) => {
+                    const postDate = post.meta ? post.meta.split(' • ')[0] : '31 Jul 2026';
+                    const postCategory = (post as any).category || 'मारवाड़';
 
-                      {/* Description, title and metadata footer */}
-                      <div className="p-4 sm:p-5 space-y-4">
-                        <h3 className="font-bold text-gray-900 text-base sm:text-lg leading-snug group-hover:text-orange-600 transition-colors">
-                          {post.title}
-                        </h3>
-                        <p className="text-gray-750 text-xs sm:text-sm leading-relaxed line-clamp-2">
-                          {post.desc}
-                        </p>
-                        <div className="pt-2 border-t border-gray-150 flex items-center justify-between text-[11px] text-gray-500 font-semibold">
-                          <span>{post.meta}</span>
-                          <span
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedPost(post);
-                            }}
-                            className="text-orange-600 hover:underline cursor-pointer"
-                          >
-                            Read More →
-                          </span>
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => setSelectedPost(post)}
+                        className="py-5 sm:py-6 flex flex-col sm:flex-row items-start gap-4 sm:gap-6 group cursor-pointer hover:bg-slate-50/50 p-2 sm:p-3 rounded-xl transition-all"
+                      >
+                        {/* Left Thumbnail Image */}
+                        <div className="w-full sm:w-60 md:w-64 h-44 xs:h-48 sm:h-40 shrink-0 rounded-xl overflow-hidden shadow-xs border border-gray-200/80 bg-gray-100">
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+
+                        {/* Right Content Details */}
+                        <div className="flex-1 space-y-3 pt-1">
+                          <h3 className="font-extrabold text-[#a5362b] group-hover:text-[#80251c] text-base sm:text-lg leading-snug tracking-tight underline decoration-[#a5362b]/40 underline-offset-4 decoration-1 font-devanagari">
+                            {post.title}
+                          </h3>
+
+                          <div className="flex items-center space-x-5 text-xs font-semibold text-gray-400 pt-1">
+                            <div className="flex items-center space-x-1.5">
+                              <Calendar className="w-4 h-4 text-gray-400 shrink-0" />
+                              <span>{postDate}</span>
+                            </div>
+
+                            <div className="flex items-center space-x-1.5">
+                              <FolderOpen className="w-4 h-4 text-gray-400 shrink-0" />
+                              <span>{postCategory}</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
-
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
+
+                {/* Pagination Controls Matching Design */}
+                {totalBlogPages > 1 && (
+                  <div className="pt-10 pb-4 flex items-center justify-center space-x-6 border-t border-gray-200/80 mt-10">
+                    {Array.from({ length: totalBlogPages }).map((_, i) => {
+                      const pageNum = i + 1;
+                      const isActive = currentBlogPage === pageNum;
+                      return (
+                        <button
+                          key={pageNum}
+                          type="button"
+                          onClick={() => {
+                            setCurrentBlogPage(pageNum);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                          className={
+                            isActive
+                              ? "w-11 h-11 rounded-full border border-blue-200/80 bg-white flex items-center justify-center text-sky-500 font-semibold text-lg shadow-xs transition-all"
+                              : "w-9 h-9 flex items-center justify-center text-slate-600 hover:text-slate-900 font-medium text-lg cursor-pointer transition-colors"
+                          }
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+
+                    {/* Next Page Chevron */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (currentBlogPage < totalBlogPages) {
+                          setCurrentBlogPage((prev) => prev + 1);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }}
+                      disabled={currentBlogPage === totalBlogPages}
+                      className="w-9 h-9 flex items-center justify-center text-slate-300 hover:text-sky-500 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                      title="Next Page"
+                    >
+                      <ChevronRight className="w-5 h-5 text-slate-300 hover:text-sky-500" />
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })()}
