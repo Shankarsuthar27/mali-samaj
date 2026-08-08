@@ -85,7 +85,7 @@ export const NewsPage: React.FC = () => {
               className="flex items-start space-x-4 py-6 first:pt-0 last:pb-0 cursor-pointer group"
             >
               {/* Thumbnail Image Container */}
-              <div className="w-24 h-16 sm:w-28 sm:h-20 md:w-32 md:h-24 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group-hover:opacity-90 transition-opacity">
+              <div className="w-32 h-22 sm:w-36 sm:h-24 md:w-44 md:h-30 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group-hover:opacity-90 transition-opacity">
                 <img
                   src={item.image}
                   alt={item.title}

@@ -844,7 +844,7 @@ export const AboutPage: React.FC = () => {
                           className="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm flex flex-col group cursor-pointer hover:shadow-md transition-shadow"
                         >
                           {/* Image banner with dark gradient overlay and white title inside bottom */}
-                          <div className="relative h-96 sm:h-[560px] w-full overflow-hidden bg-gray-50">
+                          <div className="relative h-[440px] sm:h-[560px] w-full overflow-hidden bg-gray-50">
                             <img
                               src={post.image}
                               alt={post.title}
