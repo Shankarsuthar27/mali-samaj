@@ -1,48 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Calendar, FolderOpen } from 'lucide-react';
+import { fetchAllBlogs, BlogPost } from '../lib/blogs';
 
 export const NewsPage: React.FC = () => {
   const { category } = useParams<{ category?: string }>();
   const navigate = useNavigate();
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const isMarwar = category === 'marwar';
-  
-  const newsItems = isMarwar
-    ? [
-        {
-          id: 1,
-          title: 'राजस्थान प्रदेश माली-सैनी महासभा के प्रतिनिधिमंडल ने राजधानी में निदेशक जनगणना, राजस्थान को एक महत्वपूर्ण ज्ञापन सौंपा।',
-          category: 'मारवाड़',
-          date: '31 Jul 2026',
-          image: '/images/blog/WhatsApp-Image-2026-07-28-at-3.30.18-PM.webp',
-        },
-        {
-          id: 7,
-          title: 'जालोर के गौरव: आदित्य सोलंकी ने प्रथम प्रयास में उत्तीर्ण की सी.ए. परीक्षा, क्षेत्र में हर्ष का माहौल',
-          category: 'मारवाड़',
-          date: '15 Jul 2026',
-          image: '/images/blog/dd111.webp',
-        },
-      ]
-    : [
-        {
-          id: 4,
-          title: 'चेन्नई में माली समाज भवन चेन्नई-79 का भूमिपूजन समारोह संपन्न',
-          category: 'प्रवास प्रदेश',
-          date: '18 Jul 2026',
-          image: '/images/blog/WhatsApp-Image-2026-07-10-at-8.54.44-AM-e1783668865531.webp',
-        },
-        {
-          id: 5,
-          title: 'विजयादशमी महोत्सव पर शस्त्र पूजन एवं शस्त्र प्रदर्शन कार्यक्रम',
-          category: 'प्रवास प्रदेश',
-          date: '15 Jul 2026',
-          image: '/images/blog/ChatGPT-Image-Jul-10-2026-12_52_15-PM-Copy.webp',
-        },
-      ];
 
-  const handleNewsClick = (id: number) => {
+  useEffect(() => {
+    setLoading(true);
+    fetchAllBlogs().then((data) => {
+      setBlogs(data || []);
+      setLoading(false);
+    });
+  }, [category]);
+
+  const targetCategory = isMarwar ? 'मारवाड़' : 'प्रवास प्रदेश';
+  const newsItems = blogs.filter((b) => (b.category || 'मारवाड़') === targetCategory);
+
+  const handleNewsClick = (id: string | number) => {
     navigate('/about/blog', { state: { selectedPostId: id } });
   };
 
@@ -76,42 +56,50 @@ export const NewsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* List of News Items */}
-        <div className="divide-y divide-dashed divide-gray-300">
-          {newsItems.map((item) => (
-            <div 
-              key={item.id} 
-              onClick={() => handleNewsClick(item.id)}
-              className="flex items-start space-x-4 py-6 first:pt-0 last:pb-0 cursor-pointer group"
-            >
-              {/* Thumbnail Image Container */}
-              <div className="w-36 h-24 sm:w-40 sm:h-26 md:w-48 md:h-32 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group-hover:opacity-90 transition-opacity">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+          {loading ? (
+            <div className="py-12 text-center text-gray-500 text-sm">समाचार लोड हो रहे हैं...</div>
+          ) : newsItems.length === 0 ? (
+            <div className="py-12 text-center text-gray-500 text-sm">इस श्रेणी में कोई समाचार उपलब्ध नहीं है</div>
+          ) : (
+            newsItems.map((item) => {
+              const postDate = item.meta ? item.meta.split(' • ')[0] : 'Recent';
+              const postCategory = item.category || targetCategory;
 
-              {/* Title & Metadata */}
-              <div className="flex-1 space-y-2">
-                <h3 className="text-[#A83535] font-bold text-sm sm:text-base leading-snug group-hover:underline">
-                  {item.title}
-                </h3>
-                <div className="flex items-center space-x-3 text-[11px] text-gray-400 font-bold">
-                  <span className="flex items-center space-x-1">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>{item.date}</span>
-                  </span>
-                  <span className="flex items-center space-x-1">
-                    <FolderOpen className="w-3.5 h-3.5" />
-                    <span>{item.category}</span>
-                  </span>
+              return (
+                <div 
+                  key={item.id} 
+                  onClick={() => handleNewsClick(item.id)}
+                  className="flex items-start space-x-4 py-6 first:pt-0 last:pb-0 cursor-pointer group"
+                >
+                  {/* Thumbnail Image Container */}
+                  <div className="w-36 h-24 sm:w-40 sm:h-26 md:w-48 md:h-32 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 group-hover:opacity-90 transition-opacity">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Title & Metadata */}
+                  <div className="flex-1 space-y-2">
+                    <h3 className="text-[#A83535] font-bold text-sm sm:text-base leading-snug group-hover:underline">
+                      {item.title}
+                    </h3>
+                    <div className="flex items-center space-x-3 text-[11px] text-gray-400 font-bold">
+                      <span className="flex items-center space-x-1">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>{postDate}</span>
+                      </span>
+                      <span className="flex items-center space-x-1">
+                        <FolderOpen className="w-3.5 h-3.5" />
+                        <span>{postCategory}</span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })
+          )}
 
       </div>
     </div>

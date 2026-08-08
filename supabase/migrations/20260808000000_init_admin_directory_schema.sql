@@ -100,6 +100,21 @@ CREATE TABLE IF NOT EXISTS public.admin_activity_logs (
 CREATE INDEX IF NOT EXISTS idx_logs_created_at ON public.admin_activity_logs(created_at DESC);
 
 -- ----------------------------------------------------------------
+-- 4b. Table: blogs (Community Blogs & News)
+-- ----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.blogs (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  desc TEXT NOT NULL,
+  image TEXT NOT NULL,
+  meta TEXT NOT NULL,
+  category TEXT DEFAULT 'मारवाड़',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_blogs_created_at ON public.blogs(created_at DESC);
+
+-- ----------------------------------------------------------------
 -- 5. Updated At Trigger Function
 -- ----------------------------------------------------------------
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -140,6 +155,16 @@ ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.registration_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_activity_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.blogs ENABLE ROW LEVEL SECURITY;
+
+-- RLS: blogs
+CREATE POLICY "Public read blogs"
+  ON public.blogs FOR SELECT
+  USING (true);
+
+CREATE POLICY "Public write blogs"
+  ON public.blogs FOR ALL
+  USING (true) WITH CHECK (true);
 
 -- RLS: profiles
 -- Public can ONLY view approved profiles

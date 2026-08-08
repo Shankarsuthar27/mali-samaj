@@ -16,7 +16,7 @@ export const INITIAL_BLOG_POSTS: BlogPost[] = [
   {
     id: '1',
     title: 'राजस्थान प्रदेश माली-सैनी महासभा के प्रतिनिधिमंडल ने राजधानी में निदेशक जनगणना, राजस्थान को एक महत्वपूर्ण ज्ञापन सौंपा।',
-    desc: 'राजस्थान प्रदेश माली-सैनी महासभा के प्रतिनिधिमंडल ने राजधानी में निदेशक जनगणना, राजस्थान को एक महत्वपूर्ण ज्ञापन सौंपा। इस दौरान जाति जनगणना में समाज की विभिन्न उपजातियों को ओर अलग-अलग श्रेणी में दर्ज करने के बजाय जाति कॉलम में केवल ‘सैनी/माली’ अंकित करने की पुरजोर मांग की गई।',
+    desc: 'राजस्थान प्रदेश माली-सैनी महासभा के प्रतिनिधिमंडल ने राजधानी में निदेशक जनगणना, राजस्थान को एक महत्वपूर्ण ज्ञापन सौंपा। इस दौरान जाति जनगणना में समाज की विभिन्न उपजातियों को ओर अलग-अलग श्रेणी में दर्ज करने के बजाय जाति कॉलम में केवल ‘सैनी/माली’ अंकित करने की पुरजोर मांग की गई।राजस्थान प्रदेश माली-सैनी महासभा के प्रदेश अध्यक्ष श्री छुट्टन लाल सैनी एवं उपाध्यक्ष बाबूलाल सैनी रजवास ने बताया कि देशभर में विभिन्न स्थानीय उपनामों के कारण समाज को सरकारी अभिलेखों में कई अलग-अलग नामों से चिन्हित किया जाता है। उन्होंने ऐतिहासिक संदर्भ देते हुए बताया कि वर्ष 1931 की जाति जनगणना में समाज की संयुक्त आबादी का एक बहुत बड़ा हिस्सा शामिल था, लेकिन तब जाति का आंतरिक बंटवारा कर दिया गया था, जिसे अब किसी भी सूरत में नहीं होने दिया जाएगा।महासभा के पदाधिकारियों ने कहा कि इस विसंगति को दूर करने के लिए पूरे प्रदेश में एक विशेष अभियान चलाकर समाज के लोगों को जागरूक किया जाएगा। इसके साथ ही केंद्र सरकार व जनगणना आयुक्त से व्यक्तिगत रूप से अनुरोध कर सभी उपजातियों को एक ही मुख्य नाम के अंतर्गत शामिल करवाया जाएगा।अखिल भारतवर्षीय स्तर पर भी दिल्ली में महारजिस्ट्रार एवं जनगणना आयुक्त के समक्ष यह मांग पहले ही उठाई जा चुकी है। इस अवसर पर प्रदेश अध्यक्ष छुट्टन लाल सैनी फुलवाले, उपाध्यक्ष बाबूलाल सैनी रजवास, कोषाध्यक्ष किशनलाल सैनी, यादराम सैनी,धर्म सैनी, पर्व सैनी मौजूद रहे।',
     image: '/images/blog/WhatsApp-Image-2026-07-28-at-3.30.18-PM.webp',
     meta: '31 Jul 2026 • Admin • 1 Comment',
     category: 'मारवाड़',
@@ -133,8 +133,23 @@ export const fetchAllBlogs = async (): Promise<BlogPost[]> => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
+        if (data.length === 0) {
+          // Auto-seed initial blog posts if Supabase blogs table is empty
+          try {
+            const { error: seedError } = await supabase.from('blogs').insert(INITIAL_BLOG_POSTS);
+            if (!seedError) {
+              return INITIAL_BLOG_POSTS;
+            }
+          } catch (sErr) {
+            console.warn('Failed auto-seeding blogs to Supabase', sErr);
+          }
+          return INITIAL_BLOG_POSTS;
+        }
         return data as BlogPost[];
+      }
+      if (error) {
+        console.warn('Supabase fetch blogs error:', error);
       }
     } catch (e) {
       console.warn('Supabase blogs table not found or error, using fallback state', e);
@@ -150,7 +165,7 @@ export const saveBlogPost = async (blog: Partial<BlogPost>): Promise<BlogPost> =
   const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
   const payload: BlogPost = {
-    id: blog.id || String(Date.now()),
+    id: blog.id ? String(blog.id) : String(Date.now()),
     title: blog.title || '',
     desc: blog.desc || '',
     image: blog.image || '/images/hero_community_banner.png',
@@ -161,15 +176,14 @@ export const saveBlogPost = async (blog: Partial<BlogPost>): Promise<BlogPost> =
 
   if (isSupabaseConfigured()) {
     try {
-      if (isEdit) {
-        const { error } = await supabase.from('blogs').update(payload).eq('id', payload.id);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from('blogs').insert(payload);
-        if (error) throw error;
+      const { error } = await supabase.from('blogs').upsert(payload, { onConflict: 'id' });
+      if (error) {
+        console.error('Supabase save error details:', error);
+        throw new Error(error.message || 'Supabase database error');
       }
-    } catch (e) {
-      console.warn('Failed saving blog to Supabase, saving locally', e);
+    } catch (e: any) {
+      console.error('Failed saving blog to Supabase:', e);
+      throw new Error(e.message || 'Failed saving blog to Supabase database.');
     }
   }
 
@@ -187,15 +201,21 @@ export const saveBlogPost = async (blog: Partial<BlogPost>): Promise<BlogPost> =
 };
 
 export const deleteBlogPost = async (id: string | number): Promise<void> => {
+  const strId = String(id);
   if (isSupabaseConfigured()) {
     try {
-      await supabase.from('blogs').delete().eq('id', id);
-    } catch (e) {
-      console.warn('Failed deleting blog from Supabase', e);
+      const { error } = await supabase.from('blogs').delete().eq('id', strId);
+      if (error) {
+        console.error('Supabase delete error details:', error);
+        throw new Error(error.message || 'Supabase database delete error');
+      }
+    } catch (e: any) {
+      console.error('Failed deleting blog from Supabase:', e);
+      throw new Error(e.message || 'Failed deleting blog from Supabase database.');
     }
   }
 
   const currentLocal = getStoredBlogs();
-  const filtered = currentLocal.filter((b) => String(b.id) !== String(id));
+  const filtered = currentLocal.filter((b) => String(b.id) !== String(strId));
   saveBlogsToLocal(filtered);
 };

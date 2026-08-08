@@ -205,6 +205,7 @@ export const AdminBlogsPage: React.FC = () => {
             </table>
           </div>
         )}
+
       </div>
 
       {/* Modal Form for Create / Edit */}

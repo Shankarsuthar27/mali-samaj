@@ -1,80 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShieldCheck, Users, Image as ImageIcon, HelpCircle, FileText, Bookmark, Phone, ChevronRight, Calendar, FolderOpen } from 'lucide-react';
-import { fetchAllBlogs, BlogPost } from '../lib/blogs';
-
-const BLOG_POSTS_DATA = [
-  {
-    id: 1,
-    title: 'राजस्थान प्रदेश माली-सैनी महासभा के प्रतिनिधिमंडल ने राजधानी में निदेशक जनगणना, राजस्थान को एक महत्वपूर्ण ज्ञापन सौंपा।',
-    desc: 'राजस्थान प्रदेश माली-सैनी महासभा के प्रतिनिधिमंडल ने राजधानी में निदेशक जनगणना, राजस्थान को एक महत्वपूर्ण ज्ञापन सौंपा। इस दौरान जाति जनगणना में समाज की विभिन्न उपजातियों को ओर अलग-अलग श्रेणी में दर्ज करने के बजाय जाति कॉलम में केवल ‘सैनी/माली’ अंकित करने की पुरजोर मांग की गई।राजस्थान प्रदेश माली-सैनी महासभा के प्रदेश अध्यक्ष श्री छुट्टन लाल सैनी एवं उपाध्यक्ष बाबूलाल सैनी रजवास ने बताया कि देशभर में विभिन्न स्थानीय उपनामों के कारण समाज को सरकारी अभिलेखों में कई अलग-अलग नामों से चिन्हित किया जाता है। उन्होंने ऐतिहासिक संदर्भ देते हुए बताया कि वर्ष 1931 की जाति जनगणना में समाज की संयुक्त आबादी का एक बहुत बड़ा हिस्सा शामिल था, लेकिन तब जाति का आंतरिक बंटवारा कर दिया गया था, जिसे अब किसी भी सूरत में नहीं होने दिया जाएगा।महासभा के पदाधिकारियों ने कहा कि इस विसंगति को दूर करने के लिए पूरे प्रदेश में एक विशेष अभियान चलाकर समाज के लोगों को जागरूक किया जाएगा। इसके साथ ही केंद्र सरकार व जनगणना आयुक्त से व्यक्तिगत रूप से अनुरोध कर सभी उपजातियों को एक ही मुख्य नाम के अंतर्गत शामिल करवाया जाएगा।अखिल भारतवर्षीय स्तर पर भी दिल्ली में महारजिस्ट्रार एवं जनगणना आयुक्त के समक्ष यह मांग पहले ही उठाई जा चुकी है। इस अवसर पर प्रदेश अध्यक्ष छुट्टन लाल सैनी फुलवाले, उपाध्यक्ष बाबूलाल सैनी रजवास, कोषाध्यक्ष किशनलाल सैनी, यादराम सैनी,धर्म सैनी, पर्व सैनी मौजूद रहे।',
-    image: '/images/blog/WhatsApp-Image-2026-07-28-at-3.30.18-PM.webp',
-    meta: '2026-07-28 • Admin • 1 Comment'
-  },
-  {
-    id: 2,
-    title: 'प्रतियोगी परीक्षाओं की तैयारी हेतु मार्गदर्शक सेमिनार',
-    desc: 'समाज के युवाओं को प्रतियोगी परीक्षाओं जैसे RAS, IAS, SSC एवं अन्य राजकीय सेवाओं की तैयारी हेतु विशेषज्ञों द्वारा उचित मार्गदर्शन एवं निःशुल्क काउंसलिंग सेमिनार का आयोजन किया गया...',
-    image: '/images/blog/WhatsApp-Image-2026-07-24-at-12.16.28-PM-e1784875684874.webp',
-    meta: '2026-07-25 • Admin • 0 Comments'
-  },
-  {
-    id: 3,
-    title: 'करियर मार्गदर्शन संगोष्ठी एवं निशुल्क कैरियर कॉउंसलिंग',
-    desc: 'माली समाज के विद्यार्थियों के उज्जवल भविष्य के लिए करियर कॉउंसलिंग संगोष्ठी का आयोजन हुआ जिसमें विषय विशेषज्ञों ने बच्चों को भावी करियर विकल्पों के बारे में विस्तार से जानकारी दी...',
-    image: '/images/blog/WhatsApp-Image-2026-06-25-at-8.06.49-PM-e1783858401646.webp',
-    meta: '2026-07-22 • Admin • 2 Comments'
-  },
-  {
-    id: 4,
-    title: 'चेन्नई में माली समाज भवन चेन्नई-79 का भूमिपूजन समारोह संपन्न',
-    desc: 'चेन्नई के साहूकारपेट क्षेत्र में माली समाज भवन (चेन्नई-79) के निर्माण हेतु भूमिपूजन एवं शिलान्यास समारोह अत्यंत हर्षोल्लास एवं धार्मिक विधि-विधान के साथ संपन्न हुआ...',
-    image: '/images/blog/WhatsApp-Image-2026-07-10-at-8.54.44-AM-e1783668865531.webp',
-    meta: '2026-07-18 • Admin • 5 Comments'
-  },
-  {
-    id: 5,
-    title: 'विजयादशमी महोत्सव पर शस्त्र पूजन एवं शस्त्र प्रदर्शन कार्यक्रम',
-    desc: 'माली सैनी प्रवासी समाज द्वारा विजयादशमी के पावन पर्व पर कुलदेवता एवं शस्त्रों का विधिवत पूजन-अर्चन कर समाज की एकता एवं शक्ति प्रदर्शन का भव्य कार्यक्रम आयोजित किया गया...',
-    image: '/images/blog/ChatGPT-Image-Jul-10-2026-12_52_15-PM-Copy.webp',
-    meta: '2026-07-15 • Admin • 1 Comment'
-  },
-  {
-    id: 6,
-    title: 'जालोर में नवनियुक्त जिला कलेक्टर का अभिनंदन',
-    desc: 'प्रवासी माली समाज जालोर द्वारा नवनियुक्त जिला कलेक्टर का उनके कार्यालय में पहुंचकर साफा पहनाकर, श्रीफल भेंट कर एवं गुलदस्ता देकर आत्मीय अभिनंदन एवं स्वागत किया गया...',
-    image: '/images/blog/WhatsApp-Image-2026-07-11-at-5.09.34-PM-e1783771495719.webp',
-    meta: '2026-07-10 • Admin • 0 Comments'
-  },
-  {
-    id: 7,
-    title: 'जालोर के गौरव: आदित्य सोलंकी ने प्रथम प्रयास में उत्तीर्ण की सी.ए. परीक्षा, क्षेत्र में हर्ष का माहौल',
-    desc: 'जालोर के गौरव आदित्य सोलंकी ने प्रथम प्रयास में सी.ए. परीक्षा उत्तीर्ण कर समाज का मान बढ़ाया है। उनकी इस उपलब्धि पर परिवार एवं पूरे जालोर क्षेत्र के समाजबंधुओं में हर्ष का माहौल है...',
-    image: '/images/blog/dd111.webp',
-    meta: '2026-07-08 • Admin • 4 Comments'
-  },
-  {
-    id: 8,
-    title: 'चिकित्सा शिविर: निशुल्क नेत्र एवं दंत चिकित्सा जाँच',
-    desc: 'प्रवासी माली समाज द्वारा आयोजित विशाल निशुल्क चिकित्सा शिविर में सैंकड़ों समाजबंधुओं ने स्वास्थ्य लाभ लिया तथा निशुल्क दवाइयां वितरित की गईं...',
-    image: '/images/blog/WhatsApp-Image-2026-07-06-at-12.42.58-PM-e1783841068563.webp',
-    meta: '2026-07-05 • Admin • 2 Comments'
-  },
-  {
-    id: 9,
-    title: 'संत शिरोमणि लिखमीदास जी महाराज की जयंती पर भव्य शोभायात्रा',
-    desc: 'लिखमीदास जी महाराज की जयंती के शुभ अवसर पर समाजबंधुओं द्वारा भव्य कलश यात्रा एवं शोभायात्रा निकाली गई, जिससे बड़ी संख्या में मातृशक्ति एवं युवा उपस्थित रहे...',
-    image: '/images/blog/ganpati.webp',
-    meta: '2026-07-02 • Admin • 3 Comments'
-  },
-  {
-    id: 10,
-    title: 'लेख - शिक्षा का महत्व',
-    desc: 'समाज के विकास के लिए शिक्षा ही सबसे सशक्त माध्यम है। हमें हमारे बालकों के साथ-साथ बालिकाओं की उच्च शिक्षा पर भी विशेष बल देना चाहिए ताकि एक सशक्त समाज का निर्माण हो सके...',
-    image: '/images/hero_community_banner.png',
-    meta: '2026-06-28 • Admin • 1 Comment'
-  }
-];
+import { fetchAllBlogs, INITIAL_BLOG_POSTS, BlogPost } from '../lib/blogs';
 
 export const AboutPage: React.FC = () => {
   const { subpage } = useParams<{ subpage?: string }>();
@@ -84,12 +11,12 @@ export const AboutPage: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<any>(null);
   const [currentBlogPage, setCurrentBlogPage] = useState(1);
   const [dynamicBlogs, setDynamicBlogs] = useState<BlogPost[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     fetchAllBlogs().then((data) => {
-      if (data && data.length > 0) {
-        setDynamicBlogs(data);
-      }
+      setDynamicBlogs(data || []);
+      setIsLoaded(true);
     });
   }, [subpage]);
 
@@ -101,12 +28,14 @@ export const AboutPage: React.FC = () => {
   // Hook location state to select post from external news page navigation
   useEffect(() => {
     if (location.state && (location.state as any).selectedPostId) {
-      const matched = BLOG_POSTS_DATA.find(p => p.id === (location.state as any).selectedPostId);
+      const targetId = String((location.state as any).selectedPostId);
+      const postsToSearch = dynamicBlogs.length > 0 ? dynamicBlogs : INITIAL_BLOG_POSTS;
+      const matched = postsToSearch.find(p => String(p.id) === targetId);
       if (matched) {
         setSelectedPost(matched);
       }
     }
-  }, [location.state]);
+  }, [location.state, dynamicBlogs]);
 
   const handleBack = () => {
     if (location.state && (location.state as any).selectedPostId) {
@@ -664,7 +593,7 @@ export const AboutPage: React.FC = () => {
           )}
 
           {subpage === 'blog' && (() => {
-            const blogPosts = dynamicBlogs.length > 0 ? dynamicBlogs : BLOG_POSTS_DATA;
+            const blogPosts = isLoaded ? dynamicBlogs : INITIAL_BLOG_POSTS;
 
             if (selectedPost) {
               return (
