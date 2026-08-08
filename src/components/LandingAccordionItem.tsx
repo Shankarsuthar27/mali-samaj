@@ -5,27 +5,27 @@ const accordionItems = [
   {
     id: 1,
     title: 'Voice Assistant',
-    imageUrl: 'https://images.unsplash.com/photo-1628258334105-2a0b3d6efee1?q=80&w=1974&auto=format&fit=crop',
+    imageUrl: '/images/people/WhatsApp-Image-2026-06-24-at-11.53.23-PM-2.webp',
   },
   {
     id: 2,
     title: 'AI Image Generation',
-    imageUrl: 'https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=2070&auto=format&fit=crop',
+    imageUrl: '/images/people/WhatsApp-Image-2026-06-25-at-12.48.06-PM.webp',
   },
   {
     id: 3,
     title: 'AI Chatbot + Local RAG',
-    imageUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1974&auto=format&fit=crop',
+    imageUrl: '/images/people/WhatsApp-Image-2026-07-05-at-11.53.09-PM.webp',
   },
   {
     id: 4,
     title: 'AI Agent',
-    imageUrl: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=2090&auto=format&fit=crop',
+    imageUrl: '/images/people/WhatsApp-Image-2026-07-05-at-11.52.16-PM.webp',
   },
   {
     id: 5,
     title: 'Visual Understanding',
-    imageUrl: 'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?q=80&w=2070&auto=format&fit=crop',
+    imageUrl: '/images/people/WhatsApp-Image-2026-07-10-at-8.54.44-AM-1.webp',
   },
 ];
 
@@ -58,7 +58,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
         }}
       />
       {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+      <div className="absolute inset-0 "></div>
 
       {/* Caption Text */}
       <span
@@ -72,7 +72,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
           }
         `}
       >
-        {item.title}
+        {/* {item.title} */}
       </span>
     </div>
   );
@@ -94,15 +94,17 @@ export const LandingAccordionItem: React.FC = () => {
           {/* Left Side: Text Content */}
           <div className="w-full lg:w-1/2 text-center lg:text-left">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tighter">
-              Accelerate Gen-AI Tasks on Any Device
+              मारवाड़ी माली सैनी प्रवासी समाज
+
             </h1>
             <p className="mt-6 text-lg text-gray-600 max-w-xl mx-auto lg:mx-0">
-              Build high-performance AI apps on-device without the hassle of model compression or edge deployment.
+           
+यह वेबसाइट मारवाड़ क्षेत्र के उन सभी समाज बंधुओं को समर्पित हैं जो मारवाड़ एवं प्रवास में निवासरत है तथा अपने जीवन निर्वाह - विकास के साथ साथ समाज के सभी बंधुओं के लिए सेवा के रूप में यथा-योग्यता अपना
             </p>
             <div className="mt-8">
-              <a
+              <a 
                 href="#contact"
-                className="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-800 transition-colors duration-300"
+                className="inline-block bg-green-400 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-800 transition-colors duration-300"
               >
                 Contact Us
               </a>

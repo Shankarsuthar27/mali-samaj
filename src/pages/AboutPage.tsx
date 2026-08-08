@@ -683,7 +683,7 @@ export const AboutPage: React.FC = () => {
                     <div className="lg:col-span-8 space-y-6">
 
                       {/* Featured Image */}
-                      <div className="rounded-none overflow-hidden border border-gray-200">
+                      <div className="rounded-none overflow-hidden border border-gray-200 -mx-4 sm:mx-0">
                         <img
                           src={selectedPost.image}
                           alt={selectedPost.title}
@@ -846,12 +846,12 @@ export const AboutPage: React.FC = () => {
                   समाज ब्लॉग एवं लेख
                 </h2>
 
-                <div className="space-y-8 max-w-4xl mx-auto">
+                <div className="space-y-8 w-full mx-auto">
                   {blogPosts.map((post, idx) => (
                     <div
                       key={idx}
                       onClick={() => setSelectedPost(post)}
-                      className="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm flex flex-col group cursor-pointer hover:shadow-md transition-shadow"
+                      className="bg-white rounded-none border-x-0 sm:border border-gray-200 overflow-hidden shadow-sm flex flex-col group cursor-pointer hover:shadow-md transition-shadow -mx-4 sm:mx-0"
                     >
                       {/* Image banner with no overlay text */}
                       <div className="relative h-60 xs:h-72 sm:h-[500px] md:h-[560px] w-full overflow-hidden bg-gray-50">
