@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShieldCheck, Users, Image as ImageIcon, HelpCircle, FileText, Bookmark, Phone } from 'lucide-react';
 
 const BLOG_POSTS_DATA = [
@@ -78,6 +78,7 @@ const BLOG_POSTS_DATA = [
 export const AboutPage: React.FC = () => {
   const { subpage } = useParams<{ subpage?: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeTeamTab, setActiveTeamTab] = useState('all');
   const [selectedPost, setSelectedPost] = useState<any>(null);
 
@@ -649,10 +650,13 @@ export const AboutPage: React.FC = () => {
                 <div className="space-y-6 font-devanagari text-gray-800">
                   {/* Back Link */}
                   <button
-                    onClick={() => setSelectedPost(null)}
+                    onClick={() => {
+                      setSelectedPost(null);
+                      navigate('/about/blog', { replace: true, state: null });
+                    }}
                     className="text-xs sm:text-sm font-bold text-orange-600 hover:text-orange-800 flex items-center space-x-1"
                   >
-                    <span>&lt; सभी ब्लॉग (Back to All Blogs)</span>
+                    <span>&lt; वापस जाएँ (Back to Blog List)</span>
                   </button>
 
                   {/* Headline */}
