@@ -123,7 +123,7 @@ export const AboutPage: React.FC = () => {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 terms-and-conditions">
         {/* Main Content Area */}
-        <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-sm border border-gray-200 space-y-6">
+        <div className="bg-white rounded-2xl p-3 xs:p-4 sm:p-8 shadow-sm border border-gray-200 space-y-6">
 
           {(!subpage || subpage === 'institute-intro') && (
             <div className="space-y-6 text-gray-800 leading-relaxed font-devanagari">
@@ -843,7 +843,7 @@ export const AboutPage: React.FC = () => {
                       className="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm flex flex-col group cursor-pointer hover:shadow-md transition-shadow"
                     >
                       {/* Image banner with no overlay text */}
-                      <div className="relative h-[440px] sm:h-[560px] w-full overflow-hidden bg-gray-50">
+                      <div className="relative h-60 xs:h-72 sm:h-[500px] md:h-[560px] w-full overflow-hidden bg-gray-50">
                         <img
                           src={post.image}
                           alt={post.title}
