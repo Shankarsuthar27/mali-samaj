@@ -163,7 +163,7 @@ export const Footer: React.FC = () => {
       <div className="bg-[#38491A] border-t border-black/10 py-5 text-center text-white relative z-10 font-devanagari">
         <div className="max-w-7xl mx-auto px-4">
           <p className="text-sm md:text-base font-bold tracking-wide">
-            © 2026 Marwadi Mali Saini Pravasi. All Rights Reserved.
+            © 2026 Marwadi Mali Saini Pravasi.  Build by Asthasoft Technology PVT LTD.
           </p>
         </div>
       </div>

@@ -632,8 +632,35 @@ export const AboutPage: React.FC = () => {
                       </div>
 
                       {/* Detail Paragraphs */}
-                      <div className="text-gray-700 text-sm sm:text-base space-y-4 leading-relaxed pl-1 whitespace-pre-line">
-                        <p>{selectedPost.desc}</p>
+                      <div className="text-gray-800 text-sm sm:text-base space-y-4 leading-relaxed pl-1">
+                        {(() => {
+                          const rawDesc = selectedPost.desc || '';
+                          const hasHtmlOrMarkdown =
+                            rawDesc.includes('<') ||
+                            rawDesc.includes('**') ||
+                            rawDesc.includes('*') ||
+                            rawDesc.includes('![');
+
+                          if (hasHtmlOrMarkdown) {
+                            let formattedHtml = rawDesc
+                              .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                              .replace(/\*(.*?)\*/g, '<i>$1</i>')
+                              .replace(/\!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="w-full h-auto max-h-[550px] rounded-2xl my-4 shadow-md object-cover" />');
+
+                            if (!formattedHtml.includes('<p>') && !formattedHtml.includes('<div') && !formattedHtml.includes('<br')) {
+                              formattedHtml = formattedHtml.replace(/\n/g, '<br/>');
+                            }
+
+                            return (
+                              <div
+                                className="space-y-4 blog-rich-description text-gray-800 font-devanagari"
+                                dangerouslySetInnerHTML={{ __html: formattedHtml }}
+                              />
+                            );
+                          }
+
+                          return <p className="whitespace-pre-line">{rawDesc}</p>;
+                        })()}
                       </div>
 
 

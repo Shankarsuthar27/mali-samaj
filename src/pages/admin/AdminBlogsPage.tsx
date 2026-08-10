@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Plus, Edit3, Trash2, Image as ImageIcon, Calendar, FolderOpen, X, CheckCircle, Upload, Eye } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { Plus, Edit3, Trash2, Image as ImageIcon, Calendar, FolderOpen, X, CheckCircle, Upload, Eye, Bold, Italic, Underline, Heading } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { fetchAllBlogs, saveBlogPost, deleteBlogPost, BlogPost } from '../../lib/blogs';
 
@@ -16,6 +16,69 @@ export const AdminBlogsPage: React.FC = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const applyFormatting = (prefix: string, suffix: string, defaultText: string) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = desc.substring(start, end) || defaultText;
+
+    const newText = desc.substring(0, start) + prefix + selected + suffix + desc.substring(end);
+    setDesc(newText);
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + prefix.length, start + prefix.length + selected.length);
+    }, 0);
+  };
+
+  const handleInsertDescImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size too large. Please select an image under 5MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result as string;
+      const imageMarkup = `\n<img src="${base64}" alt="Blog Image" class="w-full h-auto rounded-2xl my-4 shadow-md object-cover" />\n`;
+      
+      const textarea = textareaRef.current;
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const newText = desc.substring(0, start) + imageMarkup + desc.substring(end);
+        setDesc(newText);
+      } else {
+        setDesc((prev) => prev + imageMarkup);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleInsertDescImageUrl = () => {
+    const url = prompt('फोटो URL दर्ज करें (Enter Image URL):');
+    if (!url || !url.trim()) return;
+
+    const imageMarkup = `\n<img src="${url.trim()}" alt="Blog Image" class="w-full h-auto rounded-2xl my-4 shadow-md object-cover" />\n`;
+    const textarea = textareaRef.current;
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const newText = desc.substring(0, start) + imageMarkup + desc.substring(end);
+      setDesc(newText);
+    } else {
+      setDesc((prev) => prev + imageMarkup);
+    }
+  };
 
   useEffect(() => {
     loadBlogs();
@@ -315,16 +378,85 @@ export const AdminBlogsPage: React.FC = () => {
 
               {/* Description Content */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                  ब्लॉग विवरण (Description Content) *
-                </label>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                  <label className="block text-xs font-bold text-slate-300">
+                    ब्लॉग विवरण (Description Content) *
+                  </label>
+
+                  {/* Text Formatting Toolbar */}
+                  <div className="flex flex-wrap items-center gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                    <button
+                      type="button"
+                      onClick={() => applyFormatting('<b>', '</b>', 'बोल्ड पाठ')}
+                      className="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs font-extrabold transition-colors flex items-center space-x-1 border border-slate-800"
+                      title="Bold Text"
+                    >
+                      <Bold className="w-3.5 h-3.5" />
+                      <span>Bold</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => applyFormatting('<i>', '</i>', 'इटैलिक पाठ')}
+                      className="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs font-serif italic transition-colors flex items-center space-x-1 border border-slate-800"
+                      title="Italic Text"
+                    >
+                      <Italic className="w-3.5 h-3.5" />
+                      <span>Italic</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => applyFormatting('<u>', '</u>', 'अंडरलाइन पाठ')}
+                      className="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs underline transition-colors flex items-center space-x-1 border border-slate-800"
+                      title="Underline Text"
+                    >
+                      <Underline className="w-3.5 h-3.5" />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => applyFormatting('<h3>', '</h3>', 'उप-शीर्षक (Subheading)')}
+                      className="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs font-bold transition-colors flex items-center space-x-1 border border-slate-800"
+                      title="Subheading"
+                    >
+                      <Heading className="w-3.5 h-3.5" />
+                      <span>Heading</span>
+                    </button>
+
+                    {/* Insert Image from Computer */}
+                    <label className="px-2 py-1 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 border border-orange-500/30 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center space-x-1">
+                      <ImageIcon className="w-3.5 h-3.5" />
+                      <span>+ फोटो (Upload Image)</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleInsertDescImageFile}
+                        className="hidden"
+                      />
+                    </label>
+
+                    {/* Insert Image from URL */}
+                    <button
+                      type="button"
+                      onClick={handleInsertDescImageUrl}
+                      className="px-2 py-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 rounded-lg text-xs font-bold transition-colors flex items-center space-x-1"
+                      title="Insert Image URL"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Image URL</span>
+                    </button>
+                  </div>
+                </div>
+
                 <textarea
+                  ref={textareaRef}
                   required
-                  rows={6}
-                  placeholder="ब्लॉग का विस्तृत विवरण लिखें..."
+                  rows={8}
+                  placeholder="ब्लॉग का विस्तृत विवरण लिखें... ऊपर दिए गए बटन (Bold, Italic, Upload Image) का उपयोग करके पाठ को सजाएं एवं फोटो जोड़ें।"
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-orange-500 leading-relaxed"
+                  className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-orange-500 leading-relaxed font-sans"
                 />
               </div>
 
