@@ -255,6 +255,10 @@ export const AdminBlogsPage: React.FC = () => {
                   <option value="मारवाड़">मारवाड़</option>
                   <option value="प्रवास प्रदेश">प्रवास प्रदेश</option>
                   <option value="समाज समाचार">Blog</option>
+                  <option value="सोशल वेलफेयर">सोशल वेलफेयर</option>
+                  <option value="व्यापारिक सलाह">व्यापारिक सलाह</option>
+                  <option value="रोजगार अवसर">रोजगार अवसर</option>
+                  <option value="पुरुषार्थी समाज रत्न">पुरुषार्थी समाज रत्न</option>
                 </select>
               </div>
 

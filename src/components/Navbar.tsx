@@ -64,7 +64,7 @@ const aboutLinks2: LinkItem[] = [
     icon: HelpCircle,
   },
   {
-    title: 'Blog',
+    title: 'All Blog',
     href: '/about/blog',
     icon: BookOpen,
   },
