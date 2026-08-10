@@ -133,7 +133,7 @@ export const WelfarePage: React.FC = () => {
 
                     {/* Right Content Details */}
                     <div className="flex-1 space-y-1.5 pt-0.5">
-                      <h3 className="font-bold text-[#a5362b] group-hover:text-[#80251c] text-xs sm:text-sm leading-snug tracking-tight underline decoration-[#a5362b]/40 underline-offset-4 decoration-1 font-devanagari">
+                      <h3 className="font-normal text-[#a5362b] group-hover:text-[#80251c] text-xs sm:text-sm leading-snug tracking-tight underline decoration-[#a5362b]/40 underline-offset-4 decoration-1 font-devanagari">
                         {blog.title}
                       </h3>
 

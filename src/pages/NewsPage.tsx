@@ -82,7 +82,7 @@ export const NewsPage: React.FC = () => {
 
                   {/* Title & Metadata */}
                   <div className="flex-1 space-y-2">
-                    <h3 className="text-[#A83535] font-bold text-sm sm:text-base leading-snug group-hover:underline">
+                    <h3 className="text-[#A83535] font-normal text-sm sm:text-base leading-snug group-hover:underline">
                       {item.title}
                     </h3>
                     <div className="flex items-center space-x-3 text-[11px] text-gray-400 font-bold">

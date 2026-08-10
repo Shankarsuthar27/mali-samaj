@@ -60,7 +60,7 @@ export const GreetingsPage: React.FC = () => {
                     )}
                     
                     <div className="flex-1 min-w-0 pt-0.5">
-                      <h3 className="text-[#a83535] font-bold text-sm sm:text-base leading-snug hover:underline">
+                      <h3 className="text-[#a83535] font-normal text-sm sm:text-base leading-snug hover:underline">
                         {b.title}
                       </h3>
                       <div className="flex items-center space-x-3.5 text-[11px] sm:text-xs text-gray-400 mt-1">

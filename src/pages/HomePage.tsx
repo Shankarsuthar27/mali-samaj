@@ -49,7 +49,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenRegister }) => {
     },
   ];
 
-  const displayNews = blogs.length > 0 ? blogs.slice(0, 2) : fallbackNews.slice(0, 2);
+  const filteredBlogs = blogs.filter((b) => {
+    const cat = (b.category || '').trim();
+    return cat !== 'शुभकामनाएं' && cat !== 'शुभकामना सन्देश';
+  });
+
+  const displayNews = (filteredBlogs.length > 0 ? filteredBlogs : fallbackNews).slice(0, 2);
 
   const handleNewsClick = (id: string | number) => {
     navigate('/about/blog', { state: { selectedPostId: id } });

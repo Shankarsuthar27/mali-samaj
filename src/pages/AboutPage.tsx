@@ -593,7 +593,11 @@ export const AboutPage: React.FC = () => {
           )}
 
           {subpage === 'blog' && (() => {
-            const blogPosts = isLoaded ? dynamicBlogs : INITIAL_BLOG_POSTS;
+            const rawPosts = isLoaded ? dynamicBlogs : INITIAL_BLOG_POSTS;
+            const blogPosts = rawPosts.filter((b) => {
+              const cat = (b.category || '').trim();
+              return cat !== 'शुभकामनाएं' && cat !== 'शुभकामना सन्देश';
+            });
 
             if (selectedPost) {
               return (
@@ -925,7 +929,7 @@ export const AboutPage: React.FC = () => {
 
                         {/* Right Content Details */}
                         <div className="flex-1 space-y-3 pt-1">
-                          <h3 className="font-extrabold text-[#a5362b] group-hover:text-[#80251c] text-base sm:text-lg leading-snug tracking-tight underline decoration-[#a5362b]/40 underline-offset-4 decoration-1 font-devanagari">
+                          <h3 className="font-normal text-[#a5362b] group-hover:text-[#80251c] text-base sm:text-lg leading-snug tracking-tight underline decoration-[#a5362b]/40 underline-offset-4 decoration-1 font-devanagari">
                             {post.title}
                           </h3>
 
