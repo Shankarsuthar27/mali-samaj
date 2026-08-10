@@ -323,6 +323,7 @@ export const AdminBlogsPage: React.FC = () => {
                   <option value="रोजगार अवसर">रोजगार अवसर</option>
                   <option value="पुरुषार्थी समाज रत्न">पुरुषार्थी समाज रत्न</option>
                   <option value="शुभकामनाएं">शुभकामनाएं</option>
+                  <option value="जीवन दर्शन एवं जन सेवा">जीवन दर्शन एवं जन सेवा</option>
                 </select>
               </div>
 

@@ -1,29 +1,36 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const SuccessStories: React.FC = () => {
+  const navigate = useNavigate();
+
   const stories = [
     {
       id: '1',
+      blogId: 'jeevan-darshan-1',
       title: 'महात्मा ज्योतिबा फुले',
       description: 'महात्मा ज्योतिराव फुले : शिक्षा, समानता और सामाजिक न्याय के महान क्रांतिदूत',
       image: '/images/0.webp',
-      link: '/about/blog',
     },
     {
       id: '2',
+      blogId: 'jeevan-darshan-2',
       title: 'संत शिरोमणि लिखमीदास जी महाराज',
       description: 'भजनं भजते शासनम',
       image: '/images/1.webp',
-      link: '/about/blog',
     },
     {
       id: '3',
+      blogId: 'jeevan-darshan-3',
       title: 'शिक्षा ज्योति सावित्री बाई फुले',
       description: 'क्रांतिज्योति सावित्रीबाई फुले : भारत की प्रथम शिक्षिका और नारी जागरण की अग्रदूत',
       image: '/images/2.webp',
-      link: '/about/blog',
     },
   ];
+
+  const handleCardClick = (blogId: string) => {
+    navigate('/about/blog', { state: { selectedPostId: blogId } });
+  };
 
   return (
     <section className="py-16 bg-gray-50 border-t border-gray-200 font-devanagari relative overflow-hidden">
@@ -48,7 +55,8 @@ export const SuccessStories: React.FC = () => {
           {stories.map((story) => (
             <div
               key={story.id}
-              className="bg-white rounded-sm border border-gray-250 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-5 items-center text-center group"
+              onClick={() => handleCardClick(story.blogId)}
+              className="bg-white rounded-sm border border-gray-250 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-5 items-center text-center group cursor-pointer"
             >
               <div className="w-full">
                 
@@ -82,13 +90,17 @@ export const SuccessStories: React.FC = () => {
               </div>
 
               {/* Action Button: Deep red/burgundy rounded button */}
-              <a
-                href={story.link}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCardClick(story.blogId);
+                }}
                 className="inline-flex items-center space-x-1 bg-[#ad0037] hover:bg-[#96002f] text-white text-xs sm:text-sm font-bold px-5 py-2 rounded-[4px] shadow transition-colors duration-200"
               >
                 <span>→</span>
                 <span>जीवन दर्शन एवं जन सेवा</span>
-              </a>
+              </button>
 
             </div>
           ))}
