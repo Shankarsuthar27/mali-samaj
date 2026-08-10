@@ -120,10 +120,10 @@ export const WelfarePage: React.FC = () => {
                   <div
                     key={blog.id || idx}
                     onClick={() => handleBlogClick(blog.id)}
-                    className="py-5 sm:py-6 flex flex-col sm:flex-row items-start gap-4 sm:gap-6 group cursor-pointer hover:bg-slate-50/50 p-2 sm:p-3 rounded-xl transition-all"
+                    className="py-2.5 sm:py-3 flex flex-col sm:flex-row items-start gap-2.5 sm:gap-3.5 group cursor-pointer hover:bg-slate-50/50 p-1.5 rounded-lg transition-all"
                   >
                     {/* Left Thumbnail Image */}
-                    <div className="w-full sm:w-60 md:w-64 h-44 xs:h-48 sm:h-40 shrink-0 rounded-xl overflow-hidden shadow-xs border border-gray-200/80 bg-gray-100">
+                    <div className="w-full sm:w-32 md:w-36 h-24 xs:h-28 sm:h-22 shrink-0 rounded-md overflow-hidden shadow-xs border border-gray-200/80 bg-gray-100">
                       <img
                         src={blog.image}
                         alt={blog.title}
@@ -132,19 +132,19 @@ export const WelfarePage: React.FC = () => {
                     </div>
 
                     {/* Right Content Details */}
-                    <div className="flex-1 space-y-3 pt-1">
-                      <h3 className="font-extrabold text-[#a5362b] group-hover:text-[#80251c] text-base sm:text-lg leading-snug tracking-tight underline decoration-[#a5362b]/40 underline-offset-4 decoration-1 font-devanagari">
+                    <div className="flex-1 space-y-1.5 pt-0.5">
+                      <h3 className="font-bold text-[#a5362b] group-hover:text-[#80251c] text-xs sm:text-sm leading-snug tracking-tight underline decoration-[#a5362b]/40 underline-offset-4 decoration-1 font-devanagari">
                         {blog.title}
                       </h3>
 
-                      <div className="flex items-center space-x-5 text-xs font-semibold text-gray-400 pt-1">
-                        <div className="flex items-center space-x-1.5">
-                          <Calendar className="w-4 h-4 text-gray-400 shrink-0" />
+                      <div className="flex items-center space-x-3 text-[10px] sm:text-[11px] font-semibold text-gray-400">
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="w-3 h-3 text-gray-400 shrink-0" />
                           <span>{blogDate}</span>
                         </div>
 
-                        <div className="flex items-center space-x-1.5">
-                          <FolderOpen className="w-4 h-4 text-gray-400 shrink-0" />
+                        <div className="flex items-center space-x-1">
+                          <FolderOpen className="w-3 h-3 text-gray-400 shrink-0" />
                           <span>{postCategory}</span>
                         </div>
                       </div>

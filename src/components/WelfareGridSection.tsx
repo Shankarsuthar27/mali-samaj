@@ -35,47 +35,47 @@ export const WelfareGridSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 bg-white font-devanagari border-t border-gray-200">
+    <section className="py-12 bg-white font-devanagari border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-purple-700 font-bold text-sm bg-purple-100 px-3.5 py-1 rounded-full">
+        <div className="text-center max-w-3xl mx-auto mb-9">
+          <span className="text-purple-700 font-bold text-xs bg-purple-100 px-3 py-0.5 rounded-full">
             हित की बात
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-3 mb-4">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-2.5 mb-2.5">
             समाज उत्थान एवं वेलफेयर पहल
           </h2>
-          <p className="text-gray-600 text-base">
+          <p className="text-gray-600 text-xs sm:text-sm">
             मारवाड़ी माली सैनी प्रवासी समाज द्वारा संचालित जनहितैषी एवं विकासपरक योजनाएं
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {welfareItems.map((item) => {
             const Icon = item.icon;
             return (
               <Link
                 key={item.title}
                 to={item.path}
-                className="bg-gray-50 hover:bg-white p-6 rounded-2xl border border-gray-200 hover:border-orange-300 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between"
+                className="bg-gray-50 hover:bg-white p-4 sm:p-5 rounded-xl border border-gray-200 hover:border-orange-300 shadow-xs hover:shadow-lg transition-all duration-300 group flex flex-col justify-between"
               >
                 <div>
-                  <div className={`${item.color} w-12 h-12 rounded-xl text-white flex items-center justify-center mb-5 shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-6 h-6" />
+                  <div className={`${item.color} w-10 h-10 rounded-lg text-white flex items-center justify-center mb-3.5 shadow-xs group-hover:scale-105 transition-transform duration-300`}>
+                    <Icon className="w-5 h-5" />
                   </div>
                   
-                  <h3 className="font-bold text-xl text-gray-900 group-hover:text-orange-600 transition-colors mb-2">
+                  <h3 className="font-bold text-base sm:text-lg text-gray-900 group-hover:text-orange-600 transition-colors mb-1.5">
                     {item.title}
                   </h3>
 
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                  <p className="text-gray-600 text-xs leading-relaxed mb-3">
                     {item.description}
                   </p>
                 </div>
 
-                <div className="flex items-center text-xs font-bold text-orange-600 group-hover:text-orange-700 pt-2 border-t border-gray-200/60">
+                <div className="flex items-center text-[11px] sm:text-xs font-bold text-orange-600 group-hover:text-orange-700 pt-2 border-t border-gray-200/60">
                   <span>विस्तार से जानें</span>
-                  <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <ArrowUpRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </Link>
             );
